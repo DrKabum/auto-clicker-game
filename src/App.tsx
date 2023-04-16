@@ -1,20 +1,10 @@
 import { useState } from 'react'
-import Button from '@mui/material/Button'
-
-import { currencyFormat } from './utils/utils'
-import { Container, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import { Main } from './components/main'
 import { Side } from './components/side'
 
 export default function App() {
-  const CLICK_VALUE = 0.1
   const [money, setMoney] = useState(0)
-  const [clickLevel, setClickLevel] = useState(1)
-  const [levelModifier, setLevelModifier] = useState(1)
-
-  function pressTheButton() {
-    setMoney(money + CLICK_VALUE * clickLevel * levelModifier)
-  }
 
   return (
     <Stack
@@ -23,8 +13,8 @@ export default function App() {
         flexDirection: { xs: 'column', md: 'row' },
       }}
     >
-      <Main money={money} pressTheButton={pressTheButton} />
-      <Side />
+      <Main money={money} setMoney={setMoney} />
+      <Side money={money} setMoney={setMoney} />
     </Stack>
   )
 }
