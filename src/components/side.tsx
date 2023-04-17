@@ -1,17 +1,18 @@
+import { upgradablesData } from '../classes/upgradables-data'
+import { Upgradable } from '../classes/upgradable'
 import { Box } from '@mui/material'
 import { UpgradableCard } from './upgradableCard'
-import Employee from '../classes/employee'
 import { Dispatch, SetStateAction } from 'react'
-import Robot from '../classes/robot'
 
 export function Side({
   money,
   setMoney,
+  upgradables,
 }: {
   money: number
   setMoney: Dispatch<SetStateAction<number>>
+  upgradables: Upgradable[]
 }) {
-  const upgradables: Employee[] = [new Employee(), new Robot()]
   return (
     <Box flex={2}>
       {upgradables.map((up, i) => (

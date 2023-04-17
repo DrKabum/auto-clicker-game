@@ -9,8 +9,8 @@ import {
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import AddIcon from '@mui/icons-material/Add'
 import { SetStateAction, useEffect, useState, useContext } from 'react'
-import { currencyFormat } from '../utils/utils'
-import Upgradable from '../classes/upgradable'
+import { currencyFormat, getIncomePerSecond } from '../utils/utils'
+import { Upgradable } from '../classes/upgradable'
 import { TickWaitContext } from '../App'
 
 export function UpgradableCard({
@@ -23,29 +23,16 @@ export function UpgradableCard({
   upgradable: Upgradable
 }) {
   const TICK_WAIT = useContext(TickWaitContext)
-
-  const [baseProduction, _] = useState(upgradable.baseProduction)
-  const [level, setLevel] = useState(upgradable.level)
-  const [levelModifier, setLevelModifier] = useState(upgradable.levelModifier)
-  const [upgradeCost, setUpgradeCost] = useState(upgradable.baseUpgradeCost)
-  const [upgradeModifier, setUpgradeModifier] = useState(
-    upgradable.baseUpgradeModifier
-  )
-  const [quantity, setQuantity] = useState(upgradable.quantity)
-  const [price, setPrice] = useState(upgradable.basePrice)
   const [tickCount, setTickCount] = useState(0)
 
-  const computeIncome = () => {
-    return (incomePerSecond() * TICK_WAIT) / 1000
+  const computeIncome = (upgradable: Upgradable) => {
+    return (getIncomePerSecond(upgradable) * TICK_WAIT) / 1000
   }
-
-  const incomePerSecond = () =>
-    baseProduction * level * levelModifier * quantity
 
   useEffect(() => {
     const tick = setTimeout(() => {
-      if (quantity > 0) {
-        setMoney((prevMoney) => prevMoney + computeIncome())
+      if (upgradable.quantity && upgradable.quantity > 0) {
+        setMoney((prevMoney) => prevMoney + computeIncome(upgradable))
         setTickCount((prevTickCount) => prevTickCount + 1)
       }
     }, TICK_WAIT)
@@ -53,51 +40,63 @@ export function UpgradableCard({
   }, [tickCount])
 
   const handleHire = () => {
-    setQuantity((prevQuantity) => {
+    upgradable.setQuantity!((prevQuantity) => {
       if (prevQuantity === 0) setTickCount(1)
       return prevQuantity + 1
     })
-    setPrice(price * upgradable.priceModifier)
-    setMoney((prevMoney) => prevMoney - price)
+    upgradable.setPrice!(upgradable.price! * upgradable.priceModifier!)
+    setMoney((prevMoney) => prevMoney - upgradable.price!)
   }
 
   const handleUpgrade = () => {
-    setLevel((prevLevel) => prevLevel + 1)
-    setUpgradeCost((prevCost) => prevCost * upgradeModifier)
-    setMoney((prevMoney) => prevMoney - upgradeCost)
+    upgradable.setLevel((prevLevel) => prevLevel + 1)
+    upgradable.setUpgradeCost(
+      (prevCost) => prevCost * upgradable.upgradeModifier
+    )
+    setMoney((prevMoney) => prevMoney - upgradable.upgradeCost)
   }
 
   return (
     <Card sx={{ margin: '1em' }}>
       <CardContent>
         <Typography variant='h5' component='div'>
-          {upgradable.name} - Level {level} (x{quantity}) - Price:{' '}
-          {currencyFormat(price)}
+          {upgradable.name} - Level {upgradable.level}{' '}
+          {upgradable.price &&
+            `(x${upgradable.quantity}) - Price:
+          ${currencyFormat(upgradable.price)}`}
         </Typography>
         <Typography variant='body2' color='text.secondary'>
           {upgradable.lore}
         </Typography>
-        <Typography>
-          Together they produce {currencyFormat(incomePerSecond())} per seconde.
-        </Typography>
+        {upgradable.price && (
+          <Typography>
+            Together they produce{' '}
+            {currencyFormat(
+              upgradable.quantity! * getIncomePerSecond(upgradable)
+            )}{' '}
+            per seconde.
+          </Typography>
+        )}
       </CardContent>
       <CardActions>
         <Stack direction='row'>
-          <Button
-            onClick={handleHire}
-            startIcon={<AddIcon />}
-            size='small'
-            disabled={money <= price}
-          >
-            Hire
-          </Button>
+          {upgradable.price && (
+            <Button
+              onClick={handleHire}
+              startIcon={<AddIcon />}
+              size='small'
+              disabled={money <= upgradable.price}
+            >
+              Hire
+            </Button>
+          )}
           <Button
             onClick={handleUpgrade}
             startIcon={<KeyboardArrowUpIcon />}
             size='small'
-            disabled={money <= upgradeCost}
+            disabled={money <= upgradable.upgradeCost}
           >
-            Upgrade ({currencyFormat(upgradeCost)})
+            Upgrade ({currencyFormat(upgradable.upgradeCost)})
           </Button>
         </Stack>
       </CardActions>
