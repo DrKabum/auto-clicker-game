@@ -1,4 +1,3 @@
-import { upgradablesData } from '../classes/upgradables-data'
 import { Upgradable } from '../classes/upgradable'
 import { Box } from '@mui/material'
 import { UpgradableCard } from './upgradableCard'

@@ -1,8 +1,5 @@
-import { Dispatch, SetStateAction, useState } from 'react'
 import { currencyFormat } from './../utils/utils'
-import { Typography, Button, Box, Stack } from '@mui/material'
-import { upgradablesData } from '../classes/upgradables-data'
-import { Upgradable } from '../classes/upgradable'
+import { Typography, Button, Box } from '@mui/material'
 
 export function Main({
   money,
