@@ -87,7 +87,7 @@ export function UpgradableCard({
               size='small'
               disabled={money <= upgradable.price}
             >
-              Hire
+              {upgradable.actionButton}
             </Button>
           )}
           <Button

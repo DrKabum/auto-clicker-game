@@ -11,6 +11,7 @@ export type UpgradableStats = {
   levelModifier?: number
   priceModifier?: number
   upgradeModifier?: number
+  actionButton?: string
 }
 
 export class Upgradable {
@@ -28,6 +29,7 @@ export class Upgradable {
   price?: number
   setPrice?: React.Dispatch<SetStateAction<number>>
   priceModifier?: number
+  actionButton?: string
 
   constructor(upgradableStats: UpgradableStats) {
     const [level, setLevel] = useState(0)
@@ -55,6 +57,8 @@ export class Upgradable {
     const [upgradeCost, setUpgradeCost] = useState(upgradableStats.baseUpgradeCost)
     this.upgradeCost = upgradeCost
     this.setUpgradeCost = setUpgradeCost
-    this.upgradeModifier = upgradableStats.upgradeModifier || 1.2
+    this.upgradeModifier = upgradableStats.upgradeModifier || 2
+
+    this.actionButton = upgradableStats.actionButton || 'Buy'
   }
 }

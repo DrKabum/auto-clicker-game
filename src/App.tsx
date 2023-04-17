@@ -10,7 +10,7 @@ import { getIncomePerSecond } from './utils/utils'
 export const TickWaitContext = createContext(100)
 
 export default function App() {
-  const [money, setMoney] = useState(100)
+  const [money, setMoney] = useState(50)
   const [tickContext, setTickContext] = useState(100)
   const upgradables = upgradablesData.map((up) => new Upgradable(up))
 
