@@ -30,10 +30,11 @@ export function UpgradableCard({
   const [tickCount, setTickCount] = useState(0)
 
   const computeIncome = () => {
-    return (
-      (baseProduction * level * levelModifier * quantity * TICK_WAIT) / 1000
-    )
+    return (incomePerSecond() * TICK_WAIT) / 1000
   }
+
+  const incomePerSecond = () =>
+    baseProduction * level * levelModifier * quantity
 
   useEffect(() => {
     const tick = setTimeout(() => {
@@ -50,12 +51,12 @@ export function UpgradableCard({
       if (prevQuantity === 0) setTickCount(1)
       return prevQuantity + 1
     })
-    setPrice(price * 1.2)
+    setPrice(price * upgradable.priceModifier)
     setMoney((prevMoney) => prevMoney - price)
   }
 
   return (
-    <Card>
+    <Card sx={{ margin: '1em' }}>
       <CardContent>
         <Typography variant='h5' component='div'>
           {upgradable.name} (x{quantity}) - Price: {currencyFormat(price)}
@@ -63,13 +64,16 @@ export function UpgradableCard({
         <Typography variant='body2' color='text.secondary'>
           {upgradable.lore}
         </Typography>
+        <Typography>
+          Together they produce {currencyFormat(incomePerSecond())} per seconde.
+        </Typography>
       </CardContent>
       <CardActions>
         <Button
           onClick={handleHire}
           startIcon={<AddIcon />}
           size='small'
-          disabled={money < price}
+          disabled={money <= price}
         >
           Hire
         </Button>

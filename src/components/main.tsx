@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import { currencyFormat } from './../utils/utils'
 import { Typography, Button, Box, Stack } from '@mui/material'
+import styled from '@emotion/styled'
 
 export function Main({
   money,
@@ -21,12 +22,13 @@ export function Main({
 
   return (
     <Box
-      flex={1}
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
         justifyContent: 'center',
+        alignItems: 'center',
+        margin: '1em',
+        width: { md: '60vh' },
       }}
     >
       <Typography variant='body1'>{currencyFormat(money)}</Typography>

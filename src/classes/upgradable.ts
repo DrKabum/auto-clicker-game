@@ -6,7 +6,7 @@ export default class Upgradable {
   baseProduction: number
   lore: string
   name: string
-  id: string
+  priceModifier: number
 
   constructor() {
     this.level = 1
@@ -16,5 +16,6 @@ export default class Upgradable {
     this.baseProduction = 0
     this.lore = ""
     this.name = "Upgradable"
+    this.priceModifier = 1.2
   }
 }

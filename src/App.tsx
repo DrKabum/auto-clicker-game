@@ -1,44 +1,30 @@
-import { FormEvent, createContext, useState } from 'react'
-import { Box, Button, Input, Stack, TextField } from '@mui/material'
+import { createContext, useState } from 'react'
+import { Stack } from '@mui/material'
 import { Main } from './components/main'
 import { Side } from './components/side'
+import { Header } from './components/header'
+import { Footer } from './components/footer'
 
-export const TickWaitContext = createContext(500)
+export const TickWaitContext = createContext(100)
 
 export default function App() {
   const [money, setMoney] = useState(100)
-  const [tickWait, setTickWait] = useState(500)
-  const [tickContext, setTickContext] = useState(500)
-
-  const handleTickSubmit = (e: Event | FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setTickContext(tickWait)
-  }
+  const [tickContext, setTickContext] = useState(100)
 
   return (
     <TickWaitContext.Provider value={tickContext}>
-      <Stack p={1} minHeight='100vh' justifyContent='space-between'>
+      <Header />
+      <Stack p={1} minHeight='100%' alignItems='center'>
         <Stack
-          height='100%'
           sx={{
             flexDirection: { xs: 'column', md: 'row' },
+            height: 'calc(100vh - 5em)',
+            marginTop: '4em',
           }}
         >
           <Main money={money} setMoney={setMoney} />
           <Side money={money} setMoney={setMoney} />
         </Stack>
-        <form onSubmit={(e) => handleTickSubmit(e)}>
-          <Stack direction='row'>
-            <TextField
-              id='tick-wait'
-              label='Time between ticks in ms'
-              variant='outlined'
-              onChange={(e) => setTickWait(Number(e.target.value))}
-              value={tickWait}
-            />
-            <Button onClick={(e) => handleTickSubmit(e)}>Submit</Button>
-          </Stack>
-        </form>
       </Stack>
     </TickWaitContext.Provider>
   )
