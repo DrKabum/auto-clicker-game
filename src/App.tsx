@@ -8,7 +8,7 @@ import { Footer } from './components/footer'
 export const TickWaitContext = createContext(100)
 
 export default function App() {
-  const [money, setMoney] = useState(100)
+  const [money, setMoney] = useState(0)
   const [tickContext, setTickContext] = useState(100)
 
   return (

@@ -3,8 +3,10 @@ import {
   Card,
   CardActions,
   CardContent,
+  Stack,
   Typography,
 } from '@mui/material'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import AddIcon from '@mui/icons-material/Add'
 import { SetStateAction, useEffect, useState, useContext } from 'react'
 import { currencyFormat } from '../utils/utils'
@@ -25,6 +27,10 @@ export function UpgradableCard({
   const [baseProduction, _] = useState(upgradable.baseProduction)
   const [level, setLevel] = useState(upgradable.level)
   const [levelModifier, setLevelModifier] = useState(upgradable.levelModifier)
+  const [upgradeCost, setUpgradeCost] = useState(upgradable.baseUpgradeCost)
+  const [upgradeModifier, setUpgradeModifier] = useState(
+    upgradable.baseUpgradeModifier
+  )
   const [quantity, setQuantity] = useState(upgradable.quantity)
   const [price, setPrice] = useState(upgradable.basePrice)
   const [tickCount, setTickCount] = useState(0)
@@ -55,11 +61,18 @@ export function UpgradableCard({
     setMoney((prevMoney) => prevMoney - price)
   }
 
+  const handleUpgrade = () => {
+    setLevel((prevLevel) => prevLevel + 1)
+    setUpgradeCost((prevCost) => prevCost * upgradeModifier)
+    setMoney((prevMoney) => prevMoney - upgradeCost)
+  }
+
   return (
     <Card sx={{ margin: '1em' }}>
       <CardContent>
         <Typography variant='h5' component='div'>
-          {upgradable.name} (x{quantity}) - Price: {currencyFormat(price)}
+          {upgradable.name} - Level {level} (x{quantity}) - Price:{' '}
+          {currencyFormat(price)}
         </Typography>
         <Typography variant='body2' color='text.secondary'>
           {upgradable.lore}
@@ -69,14 +82,24 @@ export function UpgradableCard({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          onClick={handleHire}
-          startIcon={<AddIcon />}
-          size='small'
-          disabled={money <= price}
-        >
-          Hire
-        </Button>
+        <Stack direction='row'>
+          <Button
+            onClick={handleHire}
+            startIcon={<AddIcon />}
+            size='small'
+            disabled={money <= price}
+          >
+            Hire
+          </Button>
+          <Button
+            onClick={handleUpgrade}
+            startIcon={<KeyboardArrowUpIcon />}
+            size='small'
+            disabled={money <= upgradeCost}
+          >
+            Upgrade ({currencyFormat(upgradeCost)})
+          </Button>
+        </Stack>
       </CardActions>
     </Card>
   )
