@@ -17,7 +17,7 @@ export const upgradablesData: UpgradableStats[] = [
     actionButton: 'Hire'
   }, {
     name: 'Robot Prototype',
-    lore: 'Don\'t imagine anything fancy here. These "robots" are just made a of gear, a rubber band and a stick that press a button. Still, of course, they are quite better than humans at doing it.',
+    lore: 'Don\'t imagine anything fancy here. These "robots" are just made a of a gear, a rubber band and a stick that presses a button. Still, of course, they are quite better than humans at doing it.',
     basePrice: 500,
     baseProduction: .5,
     baseUpgradeCost: 5000,
