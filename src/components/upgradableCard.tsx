@@ -60,7 +60,7 @@ export function UpgradableCard({
     <Card sx={{ margin: '1em' }}>
       <CardContent>
         <Typography variant='h5' component='div'>
-          {upgradable.name} - Level {upgradable.level}{' '}
+          {upgradable.name} - Level {upgradable.level + 1}{' '}
           {upgradable.price &&
             `(x${upgradable.quantity}) - Price:
           ${currencyFormat(upgradable.price)}`}
