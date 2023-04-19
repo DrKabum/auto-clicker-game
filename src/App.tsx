@@ -1,27 +1,37 @@
-import { createContext, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Stack } from '@mui/material'
-import { Main } from './components/main'
-import { Side } from './components/side'
-import { Header } from './components/header'
+import { Main, Side, Header } from './components'
 import { Upgradable } from './classes/upgradable'
 import { upgradablesData } from './classes/upgradables-data'
-import { getIncomePerSecond } from './utils/utils'
 
-export const TickWaitContext = createContext(100)
+export const TICK_WAIT = 1000
 
 export default function App() {
-  const [money, setMoney] = useState(0)
-  const [tickContext, setTickContext] = useState(100)
+  const [money, setMoney] = useState(1000)
+  const [tickCount, setTickCount] = useState(0)
   const upgradables = upgradablesData.map((up) => new Upgradable(up))
-
-  const clickUp = upgradables.filter((up) => up.name === 'Click')[0]
+  const clickUp = upgradables[0]
 
   const handleButtonPress = () => {
-    setMoney((prevMoney) => prevMoney + getIncomePerSecond(clickUp))
+    setMoney((prevMoney) => prevMoney + clickUp.getIncomePerSecond())
   }
 
+  useEffect(() => {
+    const tick = setTimeout(() => {
+      const income = upgradables.reduce(
+        (acc, up) => acc + up.getIncomePerSecond(),
+        0
+      )
+      console.log(income)
+      setMoney((prevMoney) => prevMoney + income)
+      setTickCount(tick + 1)
+
+      return tick
+    }, TICK_WAIT)
+  }, [tickCount])
+
   return (
-    <TickWaitContext.Provider value={tickContext}>
+    <>
       <Header />
       <Stack p={1} minHeight='100%' alignItems='center'>
         <Stack
@@ -35,6 +45,6 @@ export default function App() {
           <Side money={money} setMoney={setMoney} upgradables={upgradables} />
         </Stack>
       </Stack>
-    </TickWaitContext.Provider>
+    </>
   )
 }

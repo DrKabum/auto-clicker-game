@@ -22,5 +22,12 @@ export const upgradablesData: UpgradableStats[] = [
     baseProduction: .5,
     baseUpgradeCost: 5000,
     startingQuantity: 0
+  }, {
+    name: 'Wizard',
+    lore: 'These specialised workers use powerful button pressing spells to produce a lot of clicks.',
+    basePrice: 12000,
+    baseProduction: 10,
+    baseUpgradeCost: 25000,
+    startingQuantity: 0
   }
 ]
