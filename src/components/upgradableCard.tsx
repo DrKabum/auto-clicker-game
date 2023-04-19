@@ -8,10 +8,9 @@ import {
 } from '@mui/material'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import AddIcon from '@mui/icons-material/Add'
-import { SetStateAction, useEffect, useState, useContext } from 'react'
-import { currencyFormat, getIncomePerSecond } from '../utils/utils'
+import React from 'react'
+import { currencyFormat } from '../utils/utils'
 import { Upgradable } from '../classes/upgradable'
-import { TickWaitContext } from '../App'
 
 export function UpgradableCard({
   money,
@@ -19,31 +18,11 @@ export function UpgradableCard({
   upgradable,
 }: {
   money: number
-  setMoney: React.Dispatch<SetStateAction<number>>
+  setMoney: React.Dispatch<React.SetStateAction<number>>
   upgradable: Upgradable
 }) {
-  const TICK_WAIT = useContext(TickWaitContext)
-  const [tickCount, setTickCount] = useState(0)
-
-  const computeIncome = (upgradable: Upgradable) => {
-    return (getIncomePerSecond(upgradable) * TICK_WAIT) / 1000
-  }
-
-  useEffect(() => {
-    const tick = setTimeout(() => {
-      if (upgradable.quantity && upgradable.quantity > 0) {
-        setMoney((prevMoney) => prevMoney + computeIncome(upgradable))
-        setTickCount((prevTickCount) => prevTickCount + 1)
-      }
-    }, TICK_WAIT)
-    return () => clearTimeout(tick)
-  }, [tickCount])
-
   const handleHire = () => {
-    upgradable.setQuantity!((prevQuantity) => {
-      if (prevQuantity === 0) setTickCount(1)
-      return prevQuantity + 1
-    })
+    upgradable.setQuantity!((prevQuantity) => prevQuantity + 1)
     upgradable.setPrice!(upgradable.price! * upgradable.priceModifier!)
     setMoney((prevMoney) => prevMoney - upgradable.price!)
   }
@@ -71,10 +50,7 @@ export function UpgradableCard({
         {upgradable.price && (
           <Typography>
             Together they produce{' '}
-            {currencyFormat(
-              upgradable.quantity! * getIncomePerSecond(upgradable)
-            )}{' '}
-            per seconde.
+            {currencyFormat(upgradable.getIncomePerSecond())} per seconde.
           </Typography>
         )}
       </CardContent>

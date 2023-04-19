@@ -1,7 +1,7 @@
 import { AppBar, Stack, Toolbar, Typography } from '@mui/material'
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown'
 
-export function Header() {
+export default function Header() {
   return (
     <AppBar>
       <Stack>
