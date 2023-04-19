@@ -10,7 +10,7 @@ const TICK_WAIT = 100
 
 export default function App() {
   const [savedGame, setSavedGame] = useState<LoadData>(loadGame())
-  const [money, setMoney] = useState(savedGame?.money || 100)
+  const [money, setMoney] = useState(savedGame?.money || 0)
   const [tickCount, setTickCount] = useState(0)
   let upgradables =
     savedGame?.upgradables.map((u) => new Upgradable(u)) ||
