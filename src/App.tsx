@@ -1,20 +1,35 @@
 import { useEffect, useState } from 'react'
-import { Stack } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 import { Main, Side, Header } from './components'
-import { Upgradable } from './classes/upgradable'
+import useBeforeUnload from './hooks/useBeforeUnload'
+import { saveGame, loadGame, LoadData } from './utils/utils'
 import { upgradablesData } from './classes/upgradables-data'
+import { Upgradable } from './classes/upgradable'
 
-export const TICK_WAIT = 100
+const TICK_WAIT = 100
 
 export default function App() {
-  const [money, setMoney] = useState(0)
+  const [savedGame, setSavedGame] = useState<LoadData>(loadGame())
+  const [money, setMoney] = useState(savedGame?.money || 100)
   const [tickCount, setTickCount] = useState(0)
-  const upgradables = upgradablesData.map((up) => new Upgradable(up))
-  const clickUp = upgradables[0]
+  let upgradables =
+    savedGame?.upgradables.map((u) => new Upgradable(u)) ||
+    upgradablesData.map((u) => new Upgradable(u))
+
+  const clickUpgradable = upgradables.find((up) => up.name === 'Click')!
 
   const handleButtonPress = () => {
-    setMoney((prevMoney) => prevMoney + clickUp.getUnitProduction())
+    setMoney((prevMoney) => prevMoney + clickUpgradable.getUnitProduction())
   }
+
+  const resetGame = () => {
+    setMoney(0)
+    for (const up of upgradables) {
+      up.resetValues()
+    }
+  }
+
+  useBeforeUnload(() => saveGame({ money, upgradables }), money)
 
   useEffect(() => {
     const tick = setTimeout(() => {
@@ -30,7 +45,7 @@ export default function App() {
 
   return (
     <>
-      <Header />
+      <Header handleResetGame={resetGame} />
       <Stack p={1} minHeight='100%' alignItems='center'>
         <Stack
           sx={{
@@ -42,6 +57,7 @@ export default function App() {
           <Main money={money} handleButtonPress={handleButtonPress} />
           <Side money={money} setMoney={setMoney} upgradables={upgradables} />
         </Stack>
+        <Button onClick={resetGame}>Reset save</Button>
       </Stack>
     </>
   )
