@@ -62,9 +62,12 @@ export class Upgradable {
     this.actionButton = upgradableStats.actionButton || 'Buy'
   }
 
-  getIncomePerSecond(): number {
-    if (this.name === 'Click' || !this.quantity) return 0
+  getUnitProduction(): number {
+    return this.production + this.production * this.level * this.levelModifier
+  }
 
-    return (this.production + this.production * this.level * this.levelModifier) * this.quantity!
+  getIncomePerSecond(): number {
+    if (this.name === 'Click') return 0
+    return this.getUnitProduction() * this.quantity!
   }
 }

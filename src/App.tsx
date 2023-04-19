@@ -13,7 +13,7 @@ export default function App() {
   const clickUp = upgradables[0]
 
   const handleButtonPress = () => {
-    setMoney((prevMoney) => prevMoney + clickUp.getIncomePerSecond())
+    setMoney((prevMoney) => prevMoney + clickUp.getUnitProduction())
   }
 
   useEffect(() => {
