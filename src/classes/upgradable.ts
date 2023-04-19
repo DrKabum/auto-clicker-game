@@ -62,10 +62,18 @@ export class Upgradable {
     this.actionButton = upgradableStats.actionButton || 'Buy'
   }
 
+  /**
+   * Use this function to get the income of a click.
+   * @returns the production per second for one unit of the upgradable
+   */
   getUnitProduction(): number {
     return this.production + this.production * this.level * this.levelModifier
   }
 
+  /**
+   * Use this function to get the income of any upgradable except the player's click. For this check `Upgradable.getUnitProduction`
+   * @returns the total production of an upgradable
+   */
   getIncomePerSecond(): number {
     if (this.name === 'Click') return 0
     return this.getUnitProduction() * this.quantity!
