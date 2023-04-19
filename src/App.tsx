@@ -7,7 +7,7 @@ import { upgradablesData } from './classes/upgradables-data'
 export const TICK_WAIT = 100
 
 export default function App() {
-  const [money, setMoney] = useState(1000)
+  const [money, setMoney] = useState(0)
   const [tickCount, setTickCount] = useState(0)
   const upgradables = upgradablesData.map((up) => new Upgradable(up))
   const clickUp = upgradables[0]
