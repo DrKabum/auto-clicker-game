@@ -8,6 +8,7 @@ export type UpgradableStats = {
   baseProduction: number
   baseUpgradeCost: number
   startingQuantity?: number
+  startingLevel?: number
   levelModifier?: number
   priceModifier?: number
   upgradeModifier?: number
@@ -24,6 +25,7 @@ export class Upgradable {
   upgradeCost: number
   setUpgradeCost: React.Dispatch<SetStateAction<number>>
   upgradeModifier: number
+  stats: UpgradableStats
   quantity?: number
   setQuantity?: React.Dispatch<SetStateAction<number>>
   price?: number
@@ -32,9 +34,12 @@ export class Upgradable {
   actionButton?: string
 
   constructor(upgradableStats: UpgradableStats) {
+    this.stats = upgradableStats
+
     const [level, setLevel] = useState(0)
     this.level = level
     this.setLevel = setLevel
+    upgradableStats.startingLevel && setLevel(upgradableStats.startingLevel)
     this.levelModifier = upgradableStats.levelModifier || .1
 
     if (upgradableStats.startingQuantity !== undefined) {
@@ -77,5 +82,15 @@ export class Upgradable {
   getIncomePerSecond(): number {
     if (this.name === 'Click') return 0
     return this.getUnitProduction() * this.quantity!
+  }
+
+  resetValues(): void {
+    this.setLevel(0)
+    this.setQuantity && this.setQuantity(0)
+    if (this.stats.basePrice && this.setPrice) {
+      this.setPrice(this.stats.basePrice)
+      this
+    }
+    this.setUpgradeCost(this.stats.baseUpgradeCost)
   }
 }
