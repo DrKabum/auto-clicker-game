@@ -50,10 +50,7 @@ export function UpgradableCard({
         {upgradable.price && (
           <Typography>
             Together they produce{' '}
-            {currencyFormat(
-              upgradable.quantity! * upgradable.getIncomePerSecond()
-            )}{' '}
-            per seconde.
+            {currencyFormat(upgradable.getIncomePerSecond())} per seconde.
           </Typography>
         )}
       </CardContent>

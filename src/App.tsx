@@ -22,12 +22,10 @@ export default function App() {
         (acc, up) => acc + up.getIncomePerSecond(),
         0
       )
-      console.log(income)
       setMoney((prevMoney) => prevMoney + income)
       setTickCount(tick + 1)
-
-      return tick
     }, TICK_WAIT)
+    return () => clearTimeout(tick)
   }, [tickCount])
 
   return (
