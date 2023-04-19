@@ -1,7 +1,7 @@
 import { currencyFormat } from './../utils/utils'
 import { Typography, Button, Box } from '@mui/material'
 
-export function Main({
+export default function Main({
   money,
   handleButtonPress,
 }: {

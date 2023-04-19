@@ -3,7 +3,7 @@ import { Box } from '@mui/material'
 import { UpgradableCard } from './upgradableCard'
 import { Dispatch, SetStateAction } from 'react'
 
-export function Side({
+export default function Side({
   money,
   setMoney,
   upgradables,
