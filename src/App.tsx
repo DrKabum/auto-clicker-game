@@ -4,7 +4,7 @@ import { Main, Side, Header } from './components'
 import { Upgradable } from './classes/upgradable'
 import { upgradablesData } from './classes/upgradables-data'
 
-export const TICK_WAIT = 1000
+export const TICK_WAIT = 100
 
 export default function App() {
   const [money, setMoney] = useState(1000)
@@ -19,7 +19,7 @@ export default function App() {
   useEffect(() => {
     const tick = setTimeout(() => {
       const income = upgradables.reduce(
-        (acc, up) => acc + up.getIncomePerSecond(),
+        (acc, up) => acc + (up.getIncomePerSecond() * TICK_WAIT) / 1000,
         0
       )
       setMoney((prevMoney) => prevMoney + income)
