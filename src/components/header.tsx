@@ -42,7 +42,7 @@ export default function Header({
         <Drawer anchor='right' open={drawerOpen} onClose={toggleDrawer}>
           <List>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={handleResetGame}>
                 <ListItemIcon>
                   <RestartAltIcon />
                 </ListItemIcon>
