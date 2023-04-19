@@ -57,7 +57,6 @@ export default function App() {
           <Main money={money} handleButtonPress={handleButtonPress} />
           <Side money={money} setMoney={setMoney} upgradables={upgradables} />
         </Stack>
-        <Button onClick={resetGame}>Reset save</Button>
       </Stack>
     </>
   )
