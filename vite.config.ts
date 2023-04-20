@@ -6,5 +6,5 @@ import react from '@vitejs/plugin-react'
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
   plugins: [react()],
-  base: 'auto-clicker-game'
+  base: '/auto-clicker-game'
 })
