@@ -25,6 +25,8 @@ export class Upgradable {
   upgradeCost: number
   setUpgradeCost: React.Dispatch<SetStateAction<number>>
   upgradeModifier: number
+  enabled: boolean
+  setEnabled: React.Dispatch<SetStateAction<boolean>>
   stats: UpgradableStats
   quantity?: number
   setQuantity?: React.Dispatch<SetStateAction<number>>
@@ -59,6 +61,10 @@ export class Upgradable {
     this.lore = upgradableStats.lore
     this.name = upgradableStats.name
 
+    const [enabled, setEnabled] = useState(this.name == 'Click')
+    this.enabled = enabled
+    this.setEnabled = setEnabled
+
     const [upgradeCost, setUpgradeCost] = useState(upgradableStats.baseUpgradeCost)
     this.upgradeCost = upgradeCost
     this.setUpgradeCost = setUpgradeCost
@@ -85,12 +91,19 @@ export class Upgradable {
   }
 
   resetValues(): void {
+    localStorage.removeItem('button-inc:v1')
     this.setLevel(0)
     this.setQuantity && this.setQuantity(0)
     if (this.stats.basePrice && this.setPrice) {
       this.setPrice(this.stats.basePrice)
-      this
     }
     this.setUpgradeCost(this.stats.baseUpgradeCost)
+    this.setEnabled(this.name == 'Click')
+  }
+
+  isAvailable(money: number): boolean {
+    if (this.price && this.enabled == false && money >= this.price * .8) this.setEnabled(true)
+
+    return this.enabled
   }
 }
