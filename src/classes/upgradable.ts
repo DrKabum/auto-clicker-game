@@ -81,6 +81,11 @@ export class Upgradable {
     return this.production + this.production * this.level * this.levelModifier
   }
 
+  hydrate(upgradableStats: UpgradableStats) {
+    upgradableStats.startingLevel && this.setLevel(upgradableStats.startingLevel)
+    this.levelModifier = upgradableStats.levelModifier || .1
+  }
+
   /**
    * Use this function to get the income of any upgradable except the player's click. For this check `Upgradable.getUnitProduction`
    * @returns the total production of an upgradable
@@ -90,14 +95,13 @@ export class Upgradable {
     return this.getUnitProduction() * this.quantity!
   }
 
-  resetValues(): void {
-    localStorage.removeItem('button-inc:v1')
-    this.setLevel(0)
-    this.setQuantity && this.setQuantity(0)
+  resetValues(upgradable?: UpgradableStats): void {
+    this.setLevel(upgradable?.startingLevel || 0)
+    this.setQuantity && this.setQuantity(upgradable?.startingQuantity || 0)
     if (this.stats.basePrice && this.setPrice) {
-      this.setPrice(this.stats.basePrice)
+      this.setPrice(upgradable?.basePrice || this.stats.basePrice)
     }
-    this.setUpgradeCost(this.stats.baseUpgradeCost)
+    this.setUpgradeCost(upgradable?.baseUpgradeCost || this.stats.baseUpgradeCost)
     this.setEnabled(this.name == 'Click')
   }
 

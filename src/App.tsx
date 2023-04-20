@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Button, Stack } from '@mui/material'
+import { Box, CircularProgress, Stack } from '@mui/material'
 import { Main, Side, Header } from './components'
 import useBeforeUnload from './hooks/useBeforeUnload'
-import { saveGame, loadGame, LoadData } from './utils/utils'
+import { saveGame, loadSave } from './utils/utils'
 import { upgradablesData } from './classes/upgradables-data'
 import { Upgradable } from './classes/upgradable'
 
@@ -10,14 +10,28 @@ const TICK_WAIT = 100
 const STARTING_MONEY = 0
 
 export default function App() {
-  const [savedGame, setSavedGame] = useState<LoadData>(loadGame())
-  const [money, setMoney] = useState(savedGame?.money || STARTING_MONEY)
+  const [gameLoaded, setGameLoaded] = useState(false)
+  const [money, setMoney] = useState(STARTING_MONEY)
   const [tickCount, setTickCount] = useState(0)
-  let upgradables =
-    savedGame?.upgradables.map((u) => new Upgradable(u)) ||
-    upgradablesData.map((u) => new Upgradable(u))
+  let upgradables = upgradablesData.map((u) => new Upgradable(u))
 
-  const clickUpgradable = upgradables.find((up) => up.name === 'Click')!
+  let clickUpgradable = upgradables.find((up) => up.name === 'Click')!
+
+  useEffect(() => {
+    if (!gameLoaded) {
+      setGameLoaded(true)
+      const save = loadSave()
+
+      if (save) {
+        setMoney(save.money)
+        for (const upgradable of upgradables) {
+          upgradable.resetValues(
+            save.upgradables.find((u) => u.name === upgradable.name)
+          )
+        }
+      }
+    }
+  }, [])
 
   const handleButtonPress = () => {
     setMoney((prevMoney) => prevMoney + clickUpgradable.getUnitProduction())
@@ -47,7 +61,21 @@ export default function App() {
   return (
     <>
       <Header handleResetGame={resetGame} />
-      <Stack p={1} minHeight='100%' alignItems='center'>
+      <Box
+        sx={{
+          display: gameLoaded ? 'none' : 'flex',
+          justifyContent: 'center',
+          paddingTop: '6rem',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+      <Stack
+        p={1}
+        minHeight='100%'
+        alignItems='center'
+        sx={{ display: gameLoaded ? 'block' : 'none' }}
+      >
         <Stack
           sx={{
             flexDirection: { xs: 'column', md: 'row' },

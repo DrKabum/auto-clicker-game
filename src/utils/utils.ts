@@ -35,9 +35,8 @@ export function saveGame(gameData: SaveData): void {
   localStorage.setItem(STORAGE_NAME, encrypted)
 }
 
-export function loadGame(): LoadData | undefined {
-  const savedGame = localStorage.getItem(STORAGE_NAME)
-  return savedGame ? JSON.parse(CryptoJS.AES.decrypt(savedGame, NOT_SECRET).toString(CryptoJS.enc.Utf8)) : undefined
+export function loadSave(): LoadData | undefined {
+  return localStorage.getItem(STORAGE_NAME) && JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem(STORAGE_NAME)!, NOT_SECRET).toString(CryptoJS.enc.Utf8))
 }
 
 function convertToUpgradableStats(upgradable: Upgradable): UpgradableStats {
