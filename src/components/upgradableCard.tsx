@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import AddIcon from '@mui/icons-material/Add'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { currencyFormat } from '../utils/utils'
 import { Upgradable } from '../classes/upgradable'
 
@@ -36,7 +36,12 @@ export function UpgradableCard({
   }
 
   return (
-    <Card sx={{ margin: '1em' }}>
+    <Card
+      sx={{
+        margin: '1em',
+        display: upgradable.isAvailable(money) ? 'block' : 'none',
+      }}
+    >
       <CardContent>
         <Typography variant='h5' component='div'>
           {upgradable.name} - Level {upgradable.level + 1}{' '}
