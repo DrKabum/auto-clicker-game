@@ -29,5 +29,12 @@ export const upgradablesData: UpgradableStats[] = [
     baseProduction: 50,
     baseUpgradeCost: 25000,
     startingQuantity: 0
+  }, {
+    name: 'Advanced AI',
+    lore: "Now we're talking. These are actual robots with a super advanced AI with billion of parameters or whatever. I mean, just trust us, they're gonna change the world, one button at a time.",
+    basePrice: 120000,
+    baseProduction: 500,
+    baseUpgradeCost: 500000,
+    startingQuantity: 0
   }
 ]

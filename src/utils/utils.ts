@@ -35,7 +35,7 @@ export function saveGame(gameData: SaveData): void {
   localStorage.setItem(STORAGE_NAME, encrypted)
 }
 
-export function loadGame(): LoadData {
+export function loadGame(): LoadData | undefined {
   const savedGame = localStorage.getItem(STORAGE_NAME)
   return savedGame ? JSON.parse(CryptoJS.AES.decrypt(savedGame, NOT_SECRET).toString(CryptoJS.enc.Utf8)) : undefined
 }
