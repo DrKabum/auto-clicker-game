@@ -7,10 +7,11 @@ import { upgradablesData } from './classes/upgradables-data'
 import { Upgradable } from './classes/upgradable'
 
 const TICK_WAIT = 100
+const STARTING_MONEY = 10
 
 export default function App() {
   const [savedGame, setSavedGame] = useState<LoadData>(loadGame())
-  const [money, setMoney] = useState(savedGame?.money || 0)
+  const [money, setMoney] = useState(savedGame?.money || STARTING_MONEY)
   const [tickCount, setTickCount] = useState(0)
   let upgradables =
     savedGame?.upgradables.map((u) => new Upgradable(u)) ||
@@ -23,7 +24,7 @@ export default function App() {
   }
 
   const resetGame = () => {
-    setMoney(0)
+    setMoney(STARTING_MONEY)
     for (const up of upgradables) {
       up.resetValues()
     }
