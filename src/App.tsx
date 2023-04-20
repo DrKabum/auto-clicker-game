@@ -7,7 +7,7 @@ import { upgradablesData } from './classes/upgradables-data'
 import { Upgradable } from './classes/upgradable'
 
 const TICK_WAIT = 100
-const STARTING_MONEY = 10
+const STARTING_MONEY = 0
 
 export default function App() {
   const [savedGame, setSavedGame] = useState<LoadData>(loadGame())
